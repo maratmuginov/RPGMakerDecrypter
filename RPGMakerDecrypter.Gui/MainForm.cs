@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using RPGMakerDecrypter.Decrypter;
 using RPGMakerDecrypter.Decrypter.Exceptions;
@@ -15,8 +10,8 @@ namespace RPGMakerDecrypter.Gui
 {
     public partial class MainForm : Form
     {
-        private RPGMakerVersion currentArchiveVersion;
-        private RGSSAD currentArchive;
+        private RPGMakerVersion _currentArchiveVersion;
+        private RGSSAD _currentArchive;
 
         public MainForm()
         {
@@ -47,9 +42,9 @@ namespace RPGMakerDecrypter.Gui
 
             string inputFilePath = openFileDialog.FileName;
 
-            currentArchiveVersion = RGSSAD.GetVersion(inputFilePath);
+            _currentArchiveVersion = RGSSAD.GetVersion(inputFilePath);
 
-            if (currentArchiveVersion == RPGMakerVersion.Invalid)
+            if (_currentArchiveVersion == RPGMakerVersion.Invalid)
             {
                 MessageBox.Show("Invalid input file.", "Invalid input file", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -57,14 +52,14 @@ namespace RPGMakerDecrypter.Gui
 
             try
             {
-                switch (currentArchiveVersion)
+                switch (_currentArchiveVersion)
                 {
                     case RPGMakerVersion.Xp:
                     case RPGMakerVersion.Vx:
-                        currentArchive = new RGSSADv1(inputFilePath);
+                        _currentArchive = new RGSSADv1(inputFilePath);
                         break;
                     case RPGMakerVersion.VxAce:
-                        currentArchive = new RGSSADv3(inputFilePath);
+                        _currentArchive = new RGSSADv3(inputFilePath);
                         break;
                 }
             }
@@ -87,7 +82,7 @@ namespace RPGMakerDecrypter.Gui
                 return;
             }
 
-            foreach (ArchivedFile archivedFile in currentArchive.ArchivedFiles)
+            foreach (ArchivedFile archivedFile in _currentArchive.ArchivedFiles)
             {
                 archivedFilesListBox.Items.Add(archivedFile.Name);
             }
@@ -109,21 +104,21 @@ namespace RPGMakerDecrypter.Gui
             SetClickableElementsEnabled(false);
             extractFileButton.Enabled = false;
 
-            currentArchiveVersion = RPGMakerVersion.Invalid;
+            _currentArchiveVersion = RPGMakerVersion.Invalid;
 
-            currentArchive?.Dispose();
+            _currentArchive?.Dispose();
         }
 
         private void archivedFilesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             extractFileButton.Enabled = false;
 
-            if (currentArchive == null || !currentArchive.ArchivedFiles.Any() || archivedFilesListBox.SelectedIndex == -1)
+            if (_currentArchive == null || !_currentArchive.ArchivedFiles.Any() || archivedFilesListBox.SelectedIndex == -1)
             {
                 return;
             }
 
-            ArchivedFile archivedFile = currentArchive.ArchivedFiles[archivedFilesListBox.SelectedIndex];
+            ArchivedFile archivedFile = _currentArchive.ArchivedFiles[archivedFilesListBox.SelectedIndex];
 
             fileNameTextBox.Text = archivedFile.Name;
             sizeTextBox.Text = archivedFile.Size.ToString();
@@ -133,12 +128,12 @@ namespace RPGMakerDecrypter.Gui
 
         private void extractToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (currentArchive == null || !currentArchive.ArchivedFiles.Any())
+            if (_currentArchive == null || !_currentArchive.ArchivedFiles.Any())
             {
                 return;
             }
 
-            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+            var folderBrowserDialog = new FolderBrowserDialog();
 
             var result = folderBrowserDialog.ShowDialog();
 
@@ -151,7 +146,7 @@ namespace RPGMakerDecrypter.Gui
 
             try
             {
-                currentArchive.ExtractAllFiles(outputDirectoryPath, true);
+                _currentArchive.ExtractAllFiles(outputDirectoryPath, true);
             }
             catch (Exception)
             {
@@ -161,27 +156,28 @@ namespace RPGMakerDecrypter.Gui
 
             if (generateProjectCheckBox.Checked)
             {
-                ProjectGenerator.GenerateProject(currentArchiveVersion, outputDirectoryPath);
+                ProjectGenerator.GenerateProject(_currentArchiveVersion, outputDirectoryPath);
             }
 
-            statusLabel.Text = "Archive extracted succesfully.";
+            statusLabel.Text = "Archive extracted successfully.";
         }
 
         private void extractFileButton_Click(object sender, EventArgs e)
         {
-            if (currentArchive == null || !currentArchive.ArchivedFiles.Any() || archivedFilesListBox.SelectedIndex == -1)
+            if (_currentArchive == null || !_currentArchive.ArchivedFiles.Any() || archivedFilesListBox.SelectedIndex == -1)
             {
                 return;
             }
 
-            ArchivedFile archivedFile = currentArchive.ArchivedFiles[archivedFilesListBox.SelectedIndex];
+            ArchivedFile archivedFile = _currentArchive.ArchivedFiles[archivedFilesListBox.SelectedIndex];
 
             string fileName = archivedFile.Name.Split('\\').Last();
             string extension = fileName.Split('.').Last();
 
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.FileName = fileName;
-            saveFileDialog.Filter = $"Data file (.{extension})|*.{extension}";
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                FileName = fileName, Filter = $"Data file (.{extension})|*.{extension}"
+            };
 
             var result = saveFileDialog.ShowDialog();
 
@@ -194,7 +190,7 @@ namespace RPGMakerDecrypter.Gui
             
             try
             {
-                currentArchive.ExtractFile(archivedFile, fileInfo.DirectoryName, true, false);
+                _currentArchive.ExtractFile(archivedFile, fileInfo.DirectoryName, true, false);
             }
             catch (Exception)
             {
@@ -202,12 +198,12 @@ namespace RPGMakerDecrypter.Gui
                 return;
             }
 
-            statusLabel.Text = $"Extracted {fileName} succesfully.";
+            statusLabel.Text = $"Extracted {fileName} successfully.";
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            currentArchive?.Dispose();
+            _currentArchive?.Dispose();
             Environment.Exit(0);
         }
 

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using RPGMakerDecrypter.Decrypter.Exceptions;
 
 namespace RPGMakerDecrypter.Decrypter
@@ -15,12 +13,8 @@ namespace RPGMakerDecrypter.Decrypter
     {
         public RGSSADv3(string filePath) : base(filePath)
         {
-            int version = GetVersion();
-
-            if (version != Constants.RGASSDv3)
-            {
+            if (GetVersion() != Constants.RGASSDv3)
                 throw new InvalidArchiveException("Archive is in invalid format.");
-            }
 
             ReadRGSSAD();
         }
@@ -32,7 +26,7 @@ namespace RPGMakerDecrypter.Decrypter
         {
             BinaryReader.BaseStream.Seek(8, SeekOrigin.Begin);
 
-            uint key = (uint)BinaryReader.ReadInt32();
+            uint key = Convert.ToUInt32(BinaryReader.ReadInt32());
             key *= 9;
             key += 3;
 
@@ -40,17 +34,17 @@ namespace RPGMakerDecrypter.Decrypter
 
             while (true)
             {
-                ArchivedFile archivedFile = new ArchivedFile();
-                archivedFile.Offset = DecryptInteger(BinaryReader.ReadInt32(), key);
-                archivedFile.Size = DecryptInteger(BinaryReader.ReadInt32(), key);
-                archivedFile.Key = (uint)DecryptInteger(BinaryReader.ReadInt32(), key);
+                var archivedFile = new ArchivedFile
+                {
+                    Offset = DecryptInteger(BinaryReader.ReadInt32(), key),
+                    Size = DecryptInteger(BinaryReader.ReadInt32(), key),
+                    Key = Convert.ToUInt32(DecryptInteger(BinaryReader.ReadInt32(), key))
+                };
 
                 int length = DecryptInteger(BinaryReader.ReadInt32(), key);
 
                 if (archivedFile.Offset == 0)
-                {
                     break;
-                }
 
                 archivedFile.Name = DecryptFilename(BinaryReader.ReadBytes(length), key);
 
@@ -64,11 +58,7 @@ namespace RPGMakerDecrypter.Decrypter
         /// <param name="value">Encrypted value</param>
         /// <param name="key">Key</param>
         /// <returns>Decrypted integer</returns>
-        private int DecryptInteger(int value, uint key)
-        {
-            long result = value ^ key;
-            return (int)result;
-        }
+        private int DecryptInteger(int value, uint key) => Convert.ToInt32(value ^ key);
 
         /// <summary>
         /// Decrypts file name from given bytes using given key.
@@ -88,12 +78,10 @@ namespace RPGMakerDecrypter.Decrypter
                 if (j == 4)
                     j = 0;
                 decryptedName[i] = (byte)(encryptedName[i] ^ keyBytes[j]);
-                j += 1;
+                j++;
             }
 
-            string result = Encoding.UTF8.GetString(decryptedName);
-
-            return result;
+            return Encoding.UTF8.GetString(decryptedName);
         }
     }
 }

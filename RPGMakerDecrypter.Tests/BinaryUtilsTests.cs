@@ -16,7 +16,7 @@ namespace RPGMakerDecrypter.Tests
 
             using (BinaryReader binaryReader = new BinaryReader(new FileStream(Path.Combine(FileHelpers.TempDirectoryPath, Constants.RpgMakerXpArchiveName), FileMode.Open)))
             {
-                string s = BinaryUtils.ReadCString(binaryReader, 7);
+                BinaryUtils.ReadCString(binaryReader, 7);
                 byte version = binaryReader.ReadByte();
 
                 Assert.AreEqual(1, version);
@@ -32,7 +32,7 @@ namespace RPGMakerDecrypter.Tests
 
             using (BinaryReader binaryReader = new BinaryReader(new FileStream(Path.Combine(FileHelpers.TempDirectoryPath, Constants.RpgMakerVxArchiveName), FileMode.Open)))
             {
-                string s = BinaryUtils.ReadCString(binaryReader, 7);
+                BinaryUtils.ReadCString(binaryReader, 7);
                 byte version = binaryReader.ReadByte();
 
                 Assert.AreEqual(1, version);
@@ -48,7 +48,7 @@ namespace RPGMakerDecrypter.Tests
 
             using (BinaryReader binaryReader = new BinaryReader(new FileStream(Path.Combine(FileHelpers.TempDirectoryPath, Constants.RpgMakerVxAceArchiveName), FileMode.Open)))
             {
-                string s = BinaryUtils.ReadCString(binaryReader, 7);
+                BinaryUtils.ReadCString(binaryReader, 7);
                 byte version = binaryReader.ReadByte();
 
                 Assert.AreEqual(3, version);

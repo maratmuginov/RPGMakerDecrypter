@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using RPGMakerDecrypter.Decrypter;
 
 namespace RPGMakerDecrypter.Tests
@@ -15,9 +10,7 @@ namespace RPGMakerDecrypter.Tests
         public static void CopyArchives()
         {
             if (Directory.Exists(TempDirectoryPath))
-            {
                 Directory.Delete(TempDirectoryPath, true);
-            }
 
             Directory.CreateDirectory(TempDirectoryPath);
 

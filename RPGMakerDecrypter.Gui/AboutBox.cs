@@ -8,22 +8,17 @@ namespace RPGMakerDecrypter.Gui
 {
     partial class AboutBox : Form
     {
-        public AboutBox()
-        {
-            InitializeComponent();
-        }
+        public AboutBox() => InitializeComponent();
 
         private void AboutBox_Load(object sender, EventArgs e)
         {
-            Assembly guiAssembly = Assembly.GetEntryAssembly();
-            Assembly libraryAssembly = Assembly.GetAssembly(typeof(RGSSAD));
+            var gui = Assembly.GetEntryAssembly();
+            var lib = Assembly.GetAssembly(typeof(RGSSAD));
 
-            FileVersionInfo guiAssemblyFileVersionInfo = FileVersionInfo.GetVersionInfo(guiAssembly.Location);
-            FileVersionInfo libraryAssemblyFileVersionInfo = FileVersionInfo.GetVersionInfo(libraryAssembly.Location);
+            var guiInfo = FileVersionInfo.GetVersionInfo(gui.Location);
+            var libInfo = FileVersionInfo.GetVersionInfo(lib.Location);
 
-            versionLabel.Text = String.Format("Version: GUI: {0}, Library: {1}", 
-                guiAssemblyFileVersionInfo.FileVersion,
-                libraryAssemblyFileVersionInfo.FileVersion);
+            versionLabel.Text = $"Version: GUI: {guiInfo.FileVersion}, Library: {libInfo.FileVersion}";
         }
     }
 }

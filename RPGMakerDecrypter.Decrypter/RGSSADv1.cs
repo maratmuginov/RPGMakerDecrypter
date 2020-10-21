@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Text;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using RPGMakerDecrypter.Decrypter.Exceptions;
 
 namespace RPGMakerDecrypter.Decrypter
@@ -15,12 +12,8 @@ namespace RPGMakerDecrypter.Decrypter
     {
         public RGSSADv1(string filePath) : base(filePath)
         {
-            int version = GetVersion();
-
-            if (version != Constants.RGASSDv1)
-            {
+            if (GetVersion() != Constants.RGASSDv1)
                 throw new InvalidArchiveException("Archive is in invalid format.");
-            }
 
             ReadRGSSAD();
         }
@@ -37,13 +30,14 @@ namespace RPGMakerDecrypter.Decrypter
             BinaryReader.BaseStream.Seek(8, SeekOrigin.Begin);
             while (true)
             {
-                ArchivedFile archivedFile = new ArchivedFile();
-
                 int length = DecryptInteger(BinaryReader.ReadInt32(), ref key);
-                archivedFile.Name = DecryptFilename(BinaryReader.ReadBytes(length), ref key);
-                archivedFile.Size = DecryptInteger(BinaryReader.ReadInt32(), ref key);
-                archivedFile.Offset = BinaryReader.BaseStream.Position;
-                archivedFile.Key = key;
+                var archivedFile = new ArchivedFile
+                {
+                    Name = DecryptFilename(BinaryReader.ReadBytes(length), ref key),
+                    Size = DecryptInteger(BinaryReader.ReadInt32(), ref key),
+                    Offset = BinaryReader.BaseStream.Position,
+                    Key = key
+                };
                 ArchivedFiles.Add(archivedFile);
 
                 BinaryReader.BaseStream.Seek(archivedFile.Size, SeekOrigin.Current);

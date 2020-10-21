@@ -71,10 +71,8 @@ namespace RPGMakerDecrypter.Decrypter
         /// <param name="overrideExisting">if set to true, overrides existing files</param>
         public void ExtractAllFiles(string outputDirectoryPath, bool overrideExisting = false)
         {
-            foreach (ArchivedFile archivedFile in ArchivedFiles)
-            {
-                ExtractFile(archivedFile, outputDirectoryPath, overrideExisting);
-            }
+            foreach (var file in ArchivedFiles)
+                ExtractFile(file, outputDirectoryPath, overrideExisting);
         }
 
         /// <summary>
@@ -172,9 +170,7 @@ namespace RPGMakerDecrypter.Decrypter
         /// <param name="inputPath">Path to RGSSAD file</param>
         public static RPGMakerVersion GetVersion(string inputPath)
         {
-            FileInfo fi = new FileInfo(inputPath);
-
-            switch (fi.Name)
+            switch (new FileInfo(inputPath).Name)
             {
                 case Constants.RpgMakerXpArchiveName:
                     return RPGMakerVersion.Xp;

@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPGMakerDecrypter.Decrypter", "RPGMakerDecrypter.Decrypter\RPGMakerDecrypter.Decrypter.csproj", "{BAEEE442-1888-4340-94BE-FE743C696AE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RPGMakerDecrypter.Decrypter", "RPGMakerDecrypter.Decrypter\RPGMakerDecrypter.Decrypter.csproj", "{BAEEE442-1888-4340-94BE-FE743C696AE1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPGMakerDecrypter.Tests", "RPGMakerDecrypter.Tests\RPGMakerDecrypter.Tests.csproj", "{CDFB3E01-DE4D-4FC2-8369-21D9F70595C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPGMakerDecrypter.Cli", "RPGMakerDecrypter.Cli\RPGMakerDecrypter.Cli.csproj", "{D03BC34B-EEB1-4A26-B4FB-190CE153E06A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RPGMakerDecrypter.Cli", "RPGMakerDecrypter.Cli\RPGMakerDecrypter.Cli.csproj", "{D03BC34B-EEB1-4A26-B4FB-190CE153E06A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPGMakerDecrypter.Gui", "RPGMakerDecrypter.Gui\RPGMakerDecrypter.Gui.csproj", "{3BAA8C8A-0AF9-483B-9581-BCE2BFD44262}"
 EndProject
@@ -48,5 +48,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {246DA49B-D707-4387-A600-DE33168F3E44}
 	EndGlobalSection
 EndGlobal

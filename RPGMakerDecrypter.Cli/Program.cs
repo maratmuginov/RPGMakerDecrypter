@@ -7,11 +7,11 @@ using RPGMakerDecrypter.Decrypter.Exceptions;
 
 namespace RPGMakerDecrypter.Cli
 {
-    class Program
+    internal class Program
     {
         private static CommandLineOptions _commandLineOptions;
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             _commandLineOptions = new CommandLineOptions();
 

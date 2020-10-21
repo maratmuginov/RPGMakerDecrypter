@@ -13,29 +13,24 @@ namespace RPGMakerDecrypter.Gui
         private RPGMakerVersion _currentArchiveVersion;
         private RGSSAD _currentArchive;
 
-        public MainForm()
-        {
-            InitializeComponent();
-        }
-
+        public MainForm() => InitializeComponent();
         private void openRGSSADToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-
-            StringBuilder fileTypesStringBuilder = new StringBuilder();
+            var fileTypesStringBuilder = new StringBuilder();
             fileTypesStringBuilder.Append("RPG Maker XP Encrypted Archive (.rgssad)|*.rgssad|");
             fileTypesStringBuilder.Append("RPG Maker VX Encrypted Archive (.rgss2a)|*.rgss2a|");
             fileTypesStringBuilder.Append("RPG Maker VX Ace Encrypted Archive (.rgss3a)|*.rgss3a|");
             fileTypesStringBuilder.Append("All Files (*.*)|*.*");
 
-            openFileDialog.Filter = fileTypesStringBuilder.ToString();
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = fileTypesStringBuilder.ToString()
+            };
 
             var result = openFileDialog.ShowDialog();
 
             if (result == DialogResult.Abort || result == DialogResult.Cancel)
-            {
                 return;
-            }
 
             // It's ok to reset here because user has decided to select other file
             Reset();
@@ -89,7 +84,7 @@ namespace RPGMakerDecrypter.Gui
 
             SetClickableElementsEnabled(true);
 
-            statusLabel.Text = "Archive opened succesfully.";
+            statusLabel.Text = "Archive opened successfully.";
         }
 
         private void SetClickableElementsEnabled(bool enabled)
@@ -165,9 +160,7 @@ namespace RPGMakerDecrypter.Gui
         private void extractFileButton_Click(object sender, EventArgs e)
         {
             if (_currentArchive == null || !_currentArchive.ArchivedFiles.Any() || archivedFilesListBox.SelectedIndex == -1)
-            {
                 return;
-            }
 
             ArchivedFile archivedFile = _currentArchive.ArchivedFiles[archivedFilesListBox.SelectedIndex];
 
@@ -182,9 +175,7 @@ namespace RPGMakerDecrypter.Gui
             var result = saveFileDialog.ShowDialog();
 
             if (result == DialogResult.Abort || result == DialogResult.Cancel)
-            {
                 return;
-            }
 
             FileInfo fileInfo = new FileInfo(saveFileDialog.FileName);
             
@@ -209,8 +200,7 @@ namespace RPGMakerDecrypter.Gui
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AboutBox aboutBox = new AboutBox();
-            aboutBox.ShowDialog();
+            new AboutBox().ShowDialog();
         }
     }
 }

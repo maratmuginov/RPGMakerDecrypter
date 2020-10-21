@@ -18,9 +18,7 @@ namespace RPGMakerDecrypter.Gui.Properties {
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
         
         public static Settings Default {
-            get {
-                return defaultInstance;
-            }
+            get => defaultInstance;
         }
     }
 }
